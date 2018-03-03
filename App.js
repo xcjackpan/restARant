@@ -1,56 +1,64 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
-import { Camera, Permissions } from 'expo';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default class CameraExample extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    type: Camera.Constants.Type.back,
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      long: null,
+      lati: null,
+      accuracy: null
+    };
+  }
+  componentDidMount() {
+        setInterval(this.getLocation, 1000);
+  }
+  success = (pos) => {
+    let crd = pos.coords;
+    this.setState({
+      long: crd.longitude,
+      lati:  crd.latitude,
+      accuracy: crd.accuracy
+    })
+  }
+
+  error = (err) => {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
   };
 
-  async componentWillMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+
+  getLocation = () => {
+    console.log("hello");
+    var options = {
+      enableHighAccuracy: false,
+      timeout: 2500,
+      maximumAge: 0
+    };
+    navigator.geolocation.getCurrentPosition(this.success, this.error, options);
   }
 
   render() {
-    const { hasCameraPermission } = this.state;
-    if (hasCameraPermission === null) {
-      return <View />;
-    } else if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
-    } else {
-      return (
-        <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={this.state.type}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row',
-              }}>
-              <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  this.setState({
-                    type: this.state.type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                  });
-                }}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Flip{' '}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </Camera>
-        </View>
-      );
-    }
+    // fetch("https://maps.googleapis.com/maps/api/place/textsearch/json?query=123+main+street&location=42.3675294,-71.186966&radius=10000&key=AIzaSyB3O1kkwSUDm7Nmjs0lJ3Glm5zyLTmCNog").then(response => {
+    //   response.json().then(responseJson => {
+    //     console.log(Object.values(responseJson.results));
+    //   });
+    // });
+
+    return (
+      <View style={styles.container}>
+      <Text> {this.state.lati} </Text>
+            <Text> {this.state.long} </Text>
+                  <Text> {this.state.accuracy} </Text>
+      </View>
+    );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
