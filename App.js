@@ -14,7 +14,7 @@ export default class App extends React.Component {
       lati: null,
       hasCameraPermission: null,
       locations: null,
-      imageText: [], 
+      imageText: [],
       currentPicture: null
     };
   }
@@ -42,14 +42,13 @@ export default class App extends React.Component {
         console.log("AHHHHH"); //do not remove, will break program
           //console.log(responseJson.results);
           responseJson.results.map(data => {
-          
+
             loc.push({
               place_id: data.place_id,
               name: data.name,
               rating: data.rating
             });
           });
-                console.log("Loc length: " + loc.length);
       this.setState({
         locations: loc
       });
@@ -153,7 +152,7 @@ export default class App extends React.Component {
     //   console.log(this.state.locations);
     // }
           // const locations = this.state.locations
-          //             ? this.state.locations.map(data => { 
+          //             ? this.state.locations.map(data => {
           //               return(
           //               <Text key={data.name}> {data.name} </Text> )
           //             })
@@ -162,17 +161,18 @@ export default class App extends React.Component {
                             ? (this.state.imageText.map(data => {
                                 let strings = [];
                                 var results = fuzzy.filter(data.description, this.state.locations.map(check => check.name)).sort((a,b) =>  {return b.score - a.score});
+                                // console.log(Object.values(results));
                                 results.map(el => {
-                                  // console.log(el.string);
                                   strings.push(el.string);
                                 });
-                                return strings[0]; 
+                                return results[0];
                             }) )
                             : null;
       // console.log("Image text: " + this.state.imageText.length);
-      filtered = (filtered && Object.values(filtered).find(data => data));
-      console.log(filtered);        
-      let index = (filtered && this.state.locations.map(data => data.name).findIndex(data => filtered===data));
+      console.log(filtered);
+      filtered = (filtered && Object.values(filtered).sort((a, b) => { return b.score - a.score})[0]);
+      console.log(filtered);
+      let index = (filtered && this.state.locations.map(data => data.name).findIndex(data => filtered.string===data));
       const { hasCameraPermission } = this.state;
       if (hasCameraPermission === null) {
         return <View />;
@@ -205,7 +205,7 @@ export default class App extends React.Component {
         } else {
           return(
           <View style={{ flex: 1, }}>
-            
+
             <TouchableOpacity style={{position: 'absolute', top: 30, left: 15, zIndex: 15,}}
               onPress={this.backButton}>
                 <Text
@@ -213,7 +213,7 @@ export default class App extends React.Component {
                     ←
                 </Text>
             </TouchableOpacity>
-            <ReviewsContainer 
+            <ReviewsContainer
               location={this.state.locations[index]} style={{zIndex: 5,}}
             />
 
