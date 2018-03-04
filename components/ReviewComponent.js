@@ -10,12 +10,10 @@ export default class ReviewComponent extends Component {
 	render() {
 		return (
 			<View>
-				<Text> {this.props.author} </Text>
-				<Text> {this.props.time} </Text>
-				<Text> {this.props.rating}/5 </Text>
-				<Text> {this.props.comment} </Text>
+				<Text> {this.props.author_name} </Text>
+				<Text> {this.props.text} </Text>
 			</View>
-		)
+		);
 	}
 
 }
