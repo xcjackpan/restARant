@@ -54,23 +54,24 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   overall:{
-    backgroundColor: "#eee",
+    paddingBottom: 15,
+    backgroundColor: "#d9e1e2",
     flex: 1,
   },
   header:{
-    paddingLeft: 15,
+    paddingLeft: 50,
     paddingRight: 10,
     paddingTop: 25,
-    backgroundColor: "#abdbbd",
+    backgroundColor: "#16c3e5",
   },
   restName:{
     color: "#eee",
     fontSize: 30,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
   },
   rating:{
     fontSize: 20,
-    color: '#888',
+    color: '#eee',
     paddingBottom: 10,
   },
 });
