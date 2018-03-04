@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, NativeModules } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import fuzzy from 'fuzzy';
+import ReviewsContainer from './containers/ReviewsContainer';
 
 
 
@@ -13,7 +14,7 @@ export default class App extends React.Component {
       lati: null,
       hasCameraPermission: null,
       locations: null,
-      imageText: [],
+      imageText: [], 
       currentPicture: null
     };
   }
@@ -38,7 +39,7 @@ export default class App extends React.Component {
     console.log("Success");
       fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${crd.latitude},${crd.longitude}&radius=500&type=restaurant&key=AIzaSyAwOuyZGCccmqlcffWqoFaLkKbfvqSOVWU`).then( response => {
        response.json().then(responseJson => {
-        console.log("AHHHHH");    
+        console.log("AHHHHH"); //do not remove, will break program
           //console.log(responseJson.results);
           responseJson.results.map(data => {
           
@@ -55,7 +56,6 @@ export default class App extends React.Component {
           // console.log(Object.values(responseJson));
         });
       });
-          //do not remove, wil break program
   }
 
   error = (err) => {
@@ -142,7 +142,11 @@ export default class App extends React.Component {
               console.error(err)
           });
   }
-
+  cumstain = () => {
+    this.setState({
+      imageText: null
+    })
+  }
   render() {
     // console.log("RELOADING STATE: " + this.state.locations[0].name);
     // if (this.state.locations) {
@@ -169,15 +173,16 @@ export default class App extends React.Component {
       // console.log("Image text: " + this.state.imageText.length);
       filtered = (filtered && Object.values(filtered).find(data => data));
       console.log(filtered);        
+      let index = (filtered && this.state.locations.map(data => data.name).findIndex(data => filtered===data));
       const { hasCameraPermission } = this.state;
       if (hasCameraPermission === null) {
         return <View />;
       } else if (hasCameraPermission === false) {
         return <Text>No access to camera</Text>;
       } else {
+        if (!filtered) {
       return (
-        { !filtered 
-          ?<View style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
             <Camera ref={ref => { this.camera = ref; }} style={{ flex: 1 }} type={Camera.Constants.Type.back} >
               <View
                 style={{
@@ -199,15 +204,27 @@ export default class App extends React.Component {
               </TouchableOpacity>
               </View>
             </Camera>
+          </View>);
+        } else {
+          return(
+          <View style={{ flex: 1 }}>
+            <ReviewsContainer 
+              location={this.state.locations[index]}
+            />
+            <TouchableOpacity
+                onPress={this.cumstain}>
+                <Text
+                  style={{ fontSize: 18, marginBottom: 10, color: 'black' }}>
+                      LEAVE
+                </Text>
+              </TouchableOpacity>
           </View>
-          :<View style={{ flex: 1 }}>
-            
-          </View>
+          );
         }
-        );
+      }
     }
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {
