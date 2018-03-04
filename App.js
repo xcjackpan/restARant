@@ -142,7 +142,7 @@ export default class App extends React.Component {
               console.error(err)
           });
   }
-  cumstain = () => {
+  backButton = () => {
     this.setState({
       imageText: []
     })
@@ -158,7 +158,6 @@ export default class App extends React.Component {
           //               <Text key={data.name}> {data.name} </Text> )
           //             })
           //             :null;
-
           let filtered = this.state.imageText
                             ? (this.state.imageText.map(data => {
                                 let strings = [];
@@ -189,35 +188,35 @@ export default class App extends React.Component {
                   flex: 1,
                   backgroundColor: 'transparent',
                   flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'flex-end',
+                  marginBottom: 20,
+
                 }}>
                 <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                }}
                 onPress={this.snap}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                      picture
-                </Text>
+                <View
+                  style={{ width: 65, height: 65, borderRadius: 65/2, backgroundColor: 'white', borderStyle: 'solid', borderColor: '#ccc', borderWidth: 5, opacity: 0.8,}}>
+                </View>
               </TouchableOpacity>
               </View>
             </Camera>
           </View>);
         } else {
           return(
-          <View style={{ flex: 1 }}>
-            <ReviewsContainer 
-              location={this.state.locations[index]}
-            />
-            <TouchableOpacity
-                onPress={this.cumstain}>
+          <View style={{ flex: 1, }}>
+            
+            <TouchableOpacity style={{position: 'absolute', top: 30, left: 15, zIndex: 15,}}
+              onPress={this.backButton}>
                 <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'black' }}>
-                      LEAVE
+                  style={{ fontSize: 30, color: '#eee',}}>
+                    ←
                 </Text>
-              </TouchableOpacity>
+            </TouchableOpacity>
+            <ReviewsContainer 
+              location={this.state.locations[index]} style={{zIndex: 5,}}
+            />
+
           </View>
           );
         }
