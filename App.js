@@ -158,7 +158,6 @@ export default class App extends React.Component {
           //               <Text key={data.name}> {data.name} </Text> )
           //             })
           //             :null;
-
           let filtered = this.state.imageText
                             ? (this.state.imageText.map(data => {
                                 let strings = [];
@@ -189,33 +188,31 @@ export default class App extends React.Component {
                   flex: 1,
                   backgroundColor: 'transparent',
                   flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'flex-end',
+                  marginBottom: 20,
+
                 }}>
                 <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                }}
                 onPress={this.snap}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                      picture
-                </Text>
+                <View
+                  style={{ width: 65, height: 65, borderRadius: 65/2, backgroundColor: 'white', borderStyle: 'solid', borderColor: '#ccc', borderWidth: 5, opacity: 0.8,}}>
+                </View>
               </TouchableOpacity>
               </View>
             </Camera>
           </View>);
         } else {
           return(
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, }}>
             <ReviewsContainer 
               location={this.state.locations[index]}
             />
             <TouchableOpacity
                 onPress={this.cumstain}>
                 <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'black' }}>
-                      LEAVE
+                  style={{ fontSize: 50, fontWeight: 'bold', color: 'black',}}>
+                      ←
                 </Text>
               </TouchableOpacity>
           </View>
