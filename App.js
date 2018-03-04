@@ -11,7 +11,9 @@ export default class App extends React.Component {
     };
   }
   componentDidMount() {
-        setInterval(this.getLocation, 1000);
+
+      this.getLocation();
+
   }
   success = (pos) => {
     let crd = pos.coords;
@@ -28,7 +30,7 @@ export default class App extends React.Component {
 
 
   getLocation = () => {
-    console.log("hello");
+    // console.log("hello");
     var options = {
       enableHighAccuracy: false,
       timeout: 2500,
@@ -38,11 +40,11 @@ export default class App extends React.Component {
   }
 
   render() {
-    // fetch("https://maps.googleapis.com/maps/api/place/textsearch/json?query=123+main+street&location=42.3675294,-71.186966&radius=10000&key=AIzaSyB3O1kkwSUDm7Nmjs0lJ3Glm5zyLTmCNog").then(response => {
-    //   response.json().then(responseJson => {
-    //     console.log(Object.values(responseJson.results));
-    //   });
-    // });
+    fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.state.lati},${this.state.long}&radius=1000&type=restaurant&key=AIzaSyAwOuyZGCccmqlcffWqoFaLkKbfvqSOVWU`).then(response => {
+      response.json().then(responseJson => {
+        console.log(Object.values(responseJson));
+      });
+    });
 
     return (
       <View style={styles.container}>
