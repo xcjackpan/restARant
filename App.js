@@ -35,25 +35,27 @@ export default class App extends React.Component {
       accuracy: crd.accuracy
     });
     let loc = [];
-      fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${crd.latitude},${crd.longitude}&radius=500&type=restaurant&key=AIzaSyAwOuyZGCccmqlcffWqoFaLkKbfvqSOVWU`, response => {
+    console.log("Success");
+      fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${crd.latitude},${crd.longitude}&radius=500&type=restaurant&key=AIzaSyAwOuyZGCccmqlcffWqoFaLkKbfvqSOVWU`).then( response => {
        response.json().then(responseJson => {
+        console.log("AHHHHH");    
           //console.log(responseJson.results);
           responseJson.results.map(data => {
-              console.log(data.public_id);            
+          
             loc.push({
-              place_id: data.public_id,
+              place_id: data.place_id,
               name: data.name,
               rating: data.rating
             });
           });
-          // console.log(Object.values(responseJson));
-        });
-      });
-      console.log("Loc length: " + loc.length);
+                console.log("Loc length: " + loc.length);
       this.setState({
         locations: loc
       });
-        console.log("AHHHHH");    //do not remove, wil break program
+          // console.log(Object.values(responseJson));
+        });
+      });
+          //do not remove, wil break program
   }
 
   error = (err) => {
@@ -83,22 +85,26 @@ export default class App extends React.Component {
           let imageData = [];
           this.checkForLabels(data.base64).then(data => {
             // console.log(data);
+            if (data.responses[0].textAnnotations) {
             data.responses[0].textAnnotations.map(a => {
               imageData.push({
                 description: a.description,
                 boundingBox: a.boundingBox
               })
             });
+          }
             console.log("LOGO");
+            if (data.responses[0].logoAnnotations) {
             data.responses[0].logoAnnotations.map(a => {
               imageData.push({
                 description: a.description,
                 boundingBox: a.boundingBox
               })
             });
-          });
+          }
           this.setState({
             imageText: imageData
+          });
           });
           // console.log(result);
         // });
@@ -142,24 +148,27 @@ export default class App extends React.Component {
     // if (this.state.locations) {
     //   console.log(this.state.locations);
     // }
-          const locations = this.state.locations
-                      ? this.state.locations.map(data => { 
-                        return(
-                        <Text key={data.name}> {data.name} </Text> )
-                      })
-                      :null;
+          // const locations = this.state.locations
+          //             ? this.state.locations.map(data => { 
+          //               return(
+          //               <Text key={data.name}> {data.name} </Text> )
+          //             })
+          //             :null;
 
-      //     const filtered = this.state.imageText
-      //                       ? this.state.imageText.map(data => {
-      //                           let strings = [];
-      //                           fuzzy.filter(data.description, this.state.locations).map(el => {
-      //                             strings.push(el.string);
-      //                           });
-      //                           return strings; 
-      //                       })
-      //                       : null;
-      // console.log(Object.keys(filtered));
-                    
+          let filtered = this.state.imageText
+                            ? (this.state.imageText.map(data => {
+                                let strings = [];
+                                var results = fuzzy.filter(data.description, this.state.locations.map(check => check.name)).sort((a,b) =>  {return b.score - a.score});
+                                results.map(el => {
+                                  // console.log(el.string);
+                                  strings.push(el.string);
+                                });
+                                return strings[0]; 
+                            }) )
+                            : null;
+      // console.log("Image text: " + this.state.imageText.length);
+      filtered = (filtered && Object.values(filtered).find(data => data));
+      console.log(filtered);        
       const { hasCameraPermission } = this.state;
       if (hasCameraPermission === null) {
         return <View />;
@@ -167,9 +176,9 @@ export default class App extends React.Component {
         return <Text>No access to camera</Text>;
       } else {
       return (
-          <View style={{ flex: 1 }}>
+        { !filtered 
+          ?<View style={{ flex: 1 }}>
             <Camera ref={ref => { this.camera = ref; }} style={{ flex: 1 }} type={Camera.Constants.Type.back} >
-                            {locations}
               <View
                 style={{
                   flex: 1,
@@ -185,12 +194,16 @@ export default class App extends React.Component {
                 onPress={this.snap}>
                 <Text
                   style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Picture{' '}
+                      picture
                 </Text>
               </TouchableOpacity>
               </View>
             </Camera>
           </View>
+          :<View style={{ flex: 1 }}>
+            
+          </View>
+        }
         );
     }
   }
