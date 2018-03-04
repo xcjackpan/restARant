@@ -144,7 +144,7 @@ export default class App extends React.Component {
   }
   cumstain = () => {
     this.setState({
-      imageText: null
+      imageText: []
     })
   }
   render() {
