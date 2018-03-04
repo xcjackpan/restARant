@@ -205,15 +205,16 @@ export default class App extends React.Component {
         } else {
           return(
           <View style={{ flex: 1, }}>
+            <Text
+              style={{ fontSize: 50, color: '#eee', position: 'absolute', top: 20, left: 10, zIndex: 10,}}>
+                ←
+            </Text>
             <ReviewsContainer 
-              location={this.state.locations[index]}
+              location={this.state.locations[index]} style={{zIndex: 5,}}
             />
-            <TouchableOpacity
+            <TouchableOpacity style={{zIndex: 10,}}
                 onPress={this.cumstain}>
-                <Text
-                  style={{ fontSize: 50, fontWeight: 'bold', color: 'black',}}>
-                      ←
-                </Text>
+                
               </TouchableOpacity>
           </View>
           );
