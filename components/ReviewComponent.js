@@ -20,16 +20,16 @@ export default class ReviewComponent extends Component {
 
 const styles = StyleSheet.create({
 	overall:{
-		borderRadius: 20,
-		marginTop: 20,
-		marginLeft: 20,
-		marginRight: 20,
+		borderRadius: 5,
+		marginTop: 10,
+		marginLeft: 15,
+		marginRight: 15,
 		//marginBottom: 10,
 		backgroundColor: "#fcfdff",
 		paddingTop: 15,
 		paddingBottom: 15,
-		paddingLeft: 15,
-		paddingRight: 15,
+		paddingLeft: 20,
+		paddingRight: 20,
 	},
   name:{
 		color: "#1b3324",

@@ -142,7 +142,7 @@ export default class App extends React.Component {
               console.error(err)
           });
   }
-  cumstain = () => {
+  backButton = () => {
     this.setState({
       imageText: null
     })
@@ -205,17 +205,18 @@ export default class App extends React.Component {
         } else {
           return(
           <View style={{ flex: 1, }}>
-            <Text
-              style={{ fontSize: 50, color: '#eee', position: 'absolute', top: 20, left: 10, zIndex: 10,}}>
-                ←
-            </Text>
+            
+            <TouchableOpacity style={{position: 'absolute', top: 30, left: 15, zIndex: 15,}}
+              onPress={this.backButton}>
+                <Text
+                  style={{ fontSize: 30, color: '#eee',}}>
+                    ←
+                </Text>
+            </TouchableOpacity>
             <ReviewsContainer 
               location={this.state.locations[index]} style={{zIndex: 5,}}
             />
-            <TouchableOpacity style={{zIndex: 10,}}
-                onPress={this.cumstain}>
-                
-              </TouchableOpacity>
+
           </View>
           );
         }
