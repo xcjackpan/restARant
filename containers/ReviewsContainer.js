@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Text, View, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import ReviewComponent from '../components/ReviewComponent';
 
 export default class ReviewsContainer extends Component {
@@ -26,19 +26,51 @@ export default class ReviewsContainer extends Component {
      console.log("AHHHHHHHHSADSADASHDSA");
      console.log(this.props.location);
       return(
-        <View>
-          <Text> {this.props.location.name} </Text>
-          <Text> {this.props.location.rating} </Text>
+        <View style={styles.overall}>
+          <View style={styles.header}>
+            <Text style={styles.restName}> {this.props.location.name} </Text>
+            <Text style={styles.rating}> {this.props.location.rating} / 5</Text>
+          </View>
+          <ScrollView style={styles.container}>
           { this.state.reviews && this.state.reviews.map(data => {
-          return (<ReviewComponent
-            key={data.text}
-             author_name={data.author_name}
-             text={data.text}
+          return (
 
-          />)
-        })
+              <ReviewComponent
+                key={data.text}
+                author_name={data.author_name}
+                text={data.text}
+              />
+            )
+          })
         }
+        </ScrollView>
         </View>
       )
   }
 }
+
+const styles = StyleSheet.create({
+  container:{
+    flex: 5,
+  },
+  overall:{
+    backgroundColor: "#eee",
+    flex: 1,
+  },
+  header:{
+    paddingLeft: 15,
+    paddingRight: 10,
+    paddingTop: 25,
+    backgroundColor: "#abdbbd",
+  },
+  restName:{
+    color: "#eee",
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  rating:{
+    fontSize: 20,
+    color: '#888',
+    paddingBottom: 10,
+  },
+});
