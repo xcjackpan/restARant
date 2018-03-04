@@ -14,7 +14,7 @@ export default class ReviewsContainer extends Component {
     let things = [];
     fetch(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${this.props.location.place_id}&key=AIzaSyAZzA8yZIoWx9sy-3DrN-J0fT2UoHjQm2Y`).then(data => {
       data.json().then(moreData => {
-        console.log(moreData.result.reviews);
+        // console.log(moreData.result.reviews);
         this.setState({
           reviews: moreData.result.reviews
         })
